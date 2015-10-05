@@ -14,7 +14,7 @@ return [
         //
         // Define abilities for the passed in user here. For example:
         //
-        $user = Auth::guest() ? new User : $authority->getCurrentUser();
+        $user = Auth::guest() ? new \App\User : $authority->getCurrentUser();
         if ($user->hasRole('admin')) {
             $authority->allow('manage', 'all');
         } else {
