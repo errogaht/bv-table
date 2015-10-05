@@ -78,7 +78,7 @@ return [
     |
     */
 
-    'key' => env('APP_KEY', 'SomeRandomString'),
+    'key' => env('APP_KEY', 'dyrt^uydERG5URT&65'),
 
     'cipher' => 'AES-256-CBC',
 
@@ -154,7 +154,7 @@ return [
         Intervention\Image\ImageServiceProvider::class,
         Efficiently\AuthorityController\AuthorityControllerServiceProvider::class,
         App\Providers\FormMacroServiceProvider::class,
-
+        Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
     ],
 
     /*

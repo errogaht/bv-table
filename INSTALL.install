@@ -1,0 +1,150 @@
+INSTALL
+================================================================================
+
+
+1. Выкачиваем исходники и настраиваем Git
+-----------------------------------------
+
+ 1. Устанавливаем и настраиваем Git
+
+ 2. Экспортируем свой ключ на GitHub.com
+    см. http://help.github.com/key-setup-redirect/
+
+ 3. Клонируем репозитарий
+
+        # Создать директорию для проекта и перейти в нее
+        mkdir -p /www/bv-table/project
+        cd !$
+
+        # Развернуть репозитарий
+        git clone git@github.com:errogaht/bv-table.git .  # Точка в конце (выкатить в текущую директорию)
+
+
+2. Apache
+---------
+
+ 1. Выбираем домен для локальной работы и прописываем домен в /etc/hosts
+    - bv-table.test
+    - dev.bv-table.test
+
+ 2. Настраиваем сервер
+
+        # http.conf
+        <VirtualHost *:80>
+            ServerName bv-table.test
+            ServerAlias dev.bv-table.test
+
+            DocumentRoot /home/max/projects/bv-table/project/public
+            ErrorLog /home/max/projects/bv-table/log/httpd-error.log
+            CustomLog /dev/null common
+
+            <Directory /home/max/projects/bv-table/project/public>
+                #Options -Indexes FollowSymLinks
+                AllowOverride All
+
+                DirectoryIndex index.php
+
+                Require all granted
+
+                php_admin_flag display_errors on
+
+                <IfModule mod_rewrite.c>
+                  RewriteEngine On
+
+                  # uncomment the following line, if you are having trouble
+                  # getting no_script_name to work
+                  #RewriteBase /
+
+                  # we skip all files with .something
+                  #RewriteCond %{REQUEST_URI} \..+$
+                  #RewriteCond %{REQUEST_URI} !\.html$
+                  #RewriteRule .* - [L]
+
+                  # we check if the .html version is here (caching)
+                  RewriteRule ^$ index.html [QSA]
+                  RewriteRule ^([^.]+)$ $1.html [QSA]
+                  RewriteCond %{REQUEST_FILENAME} !-f
+
+                  # no, so we redirect to our front web controller
+                  RewriteRule ^(.*)$ index.php [QSA,L]
+                </IfModule>
+
+            </Directory>
+        </VirtualHost>
+
+
+3. PHP (5.5.max)
+----------------
+
+ 1. Необходимые модули
+    --enable-pdo --with-pdo-mysql --with-mysql
+    --enable-mbstring
+    --enable-json
+
+ 2. php.ini
+    Используем php.ini-recommended
+
+        error_reporting  =  E_ALL
+        short_open_tag = Off
+
+        [Date]
+        date.timezone = "Europe/Moscow"
+
+        [mbstring]
+        mbstring.language = Neutral
+        mbstring.internal_encoding = UTF-8
+        mbstring.http_input = auto
+        mbstring.http_output = UTF-8
+        mbstring.encoding_translation = On
+        mbstring.detect_order = auto
+        mbstring.substitute_character = none;
+        mbstring.func_overload = 0
+        mbstring.strict_encoding = Off
+
+        [iconv]
+        iconv.internal_encoding = "UTF-8"
+        iconv.output_encoding = "UTF-8"
+
+
+4. MySQL
+--------
+
+ 1. Создаем пользователя и БД:
+
+        CREATE DATABASE `bv-table_dev`  DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+        CREATE DATABASE `bv-table_test` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+        CREATE DATABASE `bv-table_prod` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+        CREATE USER 'bv-table'@localhost IDENTIFIED BY 'YOUR_PASSWORD';
+        GRANT ALL PRIVILEGES ON `bv-table_%`.* TO 'bv-table'@'localhost' WITH GRANT OPTION;
+
+ 2. Настройка MySQL
+
+        [mysqld]
+        sql-mode="STRICT_ALL_TABLES,NO_ENGINE_SUBSTITUTION"
+
+
+5. Инициализируем проект
+------------------------
+
+ 1. Создаем и редактируем конфиг
+
+        cp .env.example .env
+
+ 2. Собираем проект
+
+        cd ..
+        make
+        php artisan key:generate
+
+ 3. Создаем БД из миграций
+
+        php artisan migrate
+
+
+6. Тесты
+--------
+
+    make test
+        или
+    make build test
