@@ -10,18 +10,22 @@ use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 
 class AuthController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Registration & Login Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles the registration of new users, as well as the
-    | authentication of existing users. By default, this controller uses
-    | a simple trait to add these behaviors. Why don't you explore it?
-    |
-    */
-
     use AuthenticatesAndRegistersUsers, ThrottlesLogins;
+
+    protected $redirectPath = '/';
+
+
+    /**
+     * Show the application registration form.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getRegister()
+    {
+        return view('auth.register', [
+            'page_title' => 'Регистрация',
+        ]);
+    }
 
 
     /**
@@ -33,8 +37,9 @@ class AuthController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:users',
+            'name'     => 'required|max:255|min:5',
+            'email'    => 'required|email|max:255|unique:users',
+            'phone'    => 'required|digits_between:11,13',
             'password' => 'required|confirmed|min:6',
         ]);
     }
@@ -47,9 +52,10 @@ class AuthController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
+        return \App\User::create([
+            'name'     => $data['name'],
+            'phone'    => ltrim($data['phone'], '+'),
+            'email'    => $data['email'],
             'password' => bcrypt($data['password']),
         ]);
     }
