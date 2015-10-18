@@ -2,7 +2,7 @@
 
 @section('content')
 
-    <form method="POST" action="/auth/login">
+    <form method="POST" action="{{ route('auth.login') }}">
         {!! csrf_field() !!}
         <div class="form-group has-feedback">
             <input type="email" class="form-control" name="email" placeholder="Email" value="{{ old('email') }}">
