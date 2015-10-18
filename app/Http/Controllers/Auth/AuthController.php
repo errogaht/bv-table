@@ -16,14 +16,27 @@ class AuthController extends Controller
 
 
     /**
-     * Show the application registration form.
+     * Форма регистрации
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function getRegister()
     {
         return view('auth.register', [
             'page_title' => 'Регистрация',
+        ]);
+    }
+
+
+    /**
+     * Форма авторизации
+     *
+     * @return \Illuminate\View\View
+     */
+    public function getLogin()
+    {
+        return view('auth.login', [
+            'page_title' => 'Авторизация',
         ]);
     }
 
