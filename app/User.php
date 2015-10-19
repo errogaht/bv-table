@@ -67,4 +67,10 @@ class User extends Model implements AuthenticatableContract,
     {
         return $this->hasMany('App\Contact');
     }
+
+    public function getProfileImage($size = 100)
+    {
+        return sprintf("http://www.gravatar.com/avatar/%s?s=%d&amp;d=wavatar", md5($this->email), $size);
+
+    }
 }

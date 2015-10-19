@@ -68,7 +68,7 @@ class AuthController extends Controller
         return \App\User::create([
             'name'     => $data['name'],
             'phone'    => ltrim($data['phone'], '+'),
-            'email'    => $data['email'],
+            'email'    => strtolower(trim($data['email'])),
             'password' => bcrypt($data['password']),
         ]);
     }
