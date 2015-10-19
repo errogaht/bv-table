@@ -7,8 +7,8 @@
             <!-- Profile Image -->
             <div class="box box-primary">
                 <div class="box-body box-profile">
-                    <img class="profile-user-img img-responsive img-circle" src="{{ asset("/bower_components/admin-lte/dist/img/user4-128x128.jpg") }}" alt="User profile picture">
-                    <h3 class="profile-username text-center">Nina Mcintire</h3>
+                    <img class="profile-user-img img-responsive img-circle" src="http://www.gravatar.com/avatar/{{md5($profile->email)}}?s=100&amp;d=wavatar" alt="User profile picture">
+                    <h3 class="profile-username text-center">{{$profile->name}}</h3>
                     <p class="text-muted text-center">Software Engineer</p>
 
                     <ul class="list-group list-group-unbordered">

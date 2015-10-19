@@ -133,7 +133,7 @@ $profile_image = $user->getProfileImage();
                         <!-- Menu Footer-->
                         <li class="user-footer">
                             <div class="pull-left">
-                                <a href="{{route('profile.edit',['id'=>Auth::getUser()->id])}}" class="btn btn-default btn-flat">Профиль</a>
+                                <a href="{{route('profile')}}" class="btn btn-default btn-flat">Профиль</a>
                             </div>
                             <div class="pull-right">
                                 <a href="{{route('auth.logout')}}" class="btn btn-default btn-flat">Выход</a>

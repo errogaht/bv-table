@@ -21,13 +21,18 @@ Route::group(['middleware' => 'auth'], function () {
         return view('welcome');
     });
 
+    // Зарегистирированные пользователи
     Route::resource('user', '\App\Http\Controllers\UserController',
         ['only' => ['index', 'show']]
     );
 
-    Route::get('/date', function () {
-        d(Carbon::createFromFormat('d.m.y', '31.07.15'));
-    });
+    // Профиль пользователя
+    Route::get('profile',      ['as' => 'profile',      'uses'=>'\App\Http\Controllers\ProfileController@edit']);
+    Route::put('profile',      ['as' => 'profile',      'uses'=>'\App\Http\Controllers\ProfileController@update']);
+    Route::get('profile/{id}', ['as' => 'profile_view', 'uses'=>'\App\Http\Controllers\ProfileController@show']);
+
+
+
     Route::get('/admin', function () {
         return view('admin_template');
     });
@@ -121,7 +126,6 @@ Route::group(['middleware' => 'auth'], function () {
         echo "Hey! you don't have rights!";
         return view('demo');
     });
-    Route::resource('profile', 'ProfileController');
 });
 
 
