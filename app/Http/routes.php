@@ -5,13 +5,13 @@ use Carbon\Carbon;
 
 
 Route::get('auth/logout', ['as' => 'auth.logout', 'uses'=>'Auth\AuthController@getLogout']);
-Route::group(['middleware' => 'is_authenticated'], function () {
+Route::group(['prefix' => 'auth', 'as'=>'auth.', 'middleware' => 'is_authenticated'], function () {
     // Authentication routes...
-    Route::get('auth/login',  ['as' => 'auth.login',  'uses'=>'Auth\AuthController@getLogin']);
-    Route::post('auth/login', ['as' => 'auth.login',  'uses'=>'Auth\AuthController@postLogin']);
+    Route::get('login',  ['as' => 'login', 'uses'=>'Auth\AuthController@getLogin']);
+    Route::post('login', ['as' => 'login', 'uses'=>'Auth\AuthController@postLogin']);
     // Registration routes...
-    Route::get('auth/register', ['as' => 'auth.register', 'uses'=>'Auth\AuthController@getRegister']);
-    Route::post('auth/register', ['as' => 'auth.register', 'uses'=>'Auth\AuthController@postRegister']);
+    Route::get('register', ['as' => 'register', 'uses'=>'Auth\AuthController@getRegister']);
+    Route::post('register', ['as' => 'register', 'uses'=>'Auth\AuthController@postRegister']);
 });
 
 
@@ -20,6 +20,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/', function () {
         return view('welcome');
     });
+
+    Route::resource('user', '\App\Http\Controllers\UserController',
+        ['only' => ['index', 'show']]
+    );
+
     Route::get('/date', function () {
         d(Carbon::createFromFormat('d.m.y', '31.07.15'));
     });
