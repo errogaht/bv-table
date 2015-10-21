@@ -30,7 +30,7 @@ class ProfileController extends Controller
     {
         return view('user/profile')->with([
             'page_title' => 'Профиль',
-            'profile' => \Auth::getUser(),
+            'user' => \Auth::getUser(),
         ]);
     }
 

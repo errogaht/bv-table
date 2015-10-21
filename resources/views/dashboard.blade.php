@@ -28,6 +28,8 @@
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
     <![endif]-->
+
+    @yield('head')
 </head>
 <body class="skin-blue">
 <div class="wrapper">
@@ -78,14 +80,6 @@
 <!-- AdminLTE App -->
 <script src="{{ asset ("/bower_components/admin-lte/dist/js/app.min.js") }}" type="text/javascript"></script>
 
-<!-- DataTables -->
-<script src="{{ asset ("/bower_components/admin-lte/plugins/datatables/jquery.dataTables.min.js") }}"></script>
-<script src="{{ asset ("/bower_components/admin-lte/plugins/datatables/dataTables.bootstrap.min.js") }}"></script>
-<script src="{{ asset ("/bower_components/admin-lte/plugins/slimScroll/jquery.slimscroll.min.js") }}"></script>
-<script src="{{ asset ("/bower_components/admin-lte/plugins/fastclick/fastclick.min.js") }}"></script>
-
-<script src="{{ asset ("/bower_components/admin-lte/plugins/fastclick/fastclick.min.js") }}"></script>
-
 <script src="{{ asset ("/bower_components/admin-lte/plugins/input-mask/jquery.inputmask.js") }}"></script>
 <script src="{{ asset ("/bower_components/admin-lte/plugins/input-mask/jquery.inputmask.date.extensions.js") }}"></script>
 <script src="{{ asset ("/bower_components/admin-lte/plugins/input-mask/jquery.inputmask.extensions.js") }}"></script>
@@ -93,6 +87,8 @@
 
 <script src="{{ asset ("/js/jquery.form.min.js") }}"></script>
 <script src="{{ asset ("/js/main.js") }}"></script>
+
+@yield('js')
 
 </body>
 </html>
