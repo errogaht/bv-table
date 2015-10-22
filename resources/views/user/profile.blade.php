@@ -31,19 +31,31 @@
 
     <div class="col-md-9">
         <div class="box box-primary">
-            <form role="form" style="width: 40%;">
+            @if (count($errors) > 0)
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            <form role="form" style="width: 40%;" action="{{ route('profile') }}" method="POST">
+                {!! csrf_field() !!}
+                <input type="hidden" name="_method" value="PUT">
                 <div class="box-body">
                     <div class="form-group">
                         <label for="profile_name">Имя</label>
-                        <input type="text" name="name" value="{{$user->name}}" class="form-control" id="profile_name" placeholder="Ваше имя" required="true">
+                        <input type="text" name="name" value="{{ old('name') ?: $user->name}}" class="form-control" id="profile_name" placeholder="Ваше имя" required="true">
                     </div>
                     <div class="form-group">
                         <label for="profile_email">Email</label>
-                        <input type="email" name="email" value="{{$user->email}}" class="form-control" id="profile_email" placeholder="Ваш email" required="true">
+                        <input type="email" name="email" value="{{ old('email') ?: $user->email}}" class="form-control" id="profile_email" placeholder="Ваш email" required="true">
                     </div>
                     <div class="form-group">
                         <label for="profile_phone">Телефон</label>
-                        <input type="tel" name="phone" value="+{{$user->phone}}" class="form-control" id="profile_phone" placeholder="+79161234567" required="true">
+                        <input type="tel" name="phone" value="{{ old('phone') ?: '+'.$user->phone}}" class="form-control" id="profile_phone" placeholder="+79161234567" required="true">
                     </div>
                     <div class="form-group">
                         <label for="profile_role">Моя роль в бхакти-врикше</label>
@@ -55,12 +67,12 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="profile_phone">Слуга-лидер моей БВ и ее уровень</label>
-                        <input type="text" name="okrug" value="" class="form-control" id="profile_phone" placeholder="Нандагопал дас, БВ2" required="true">
+                        <label for="profile_sanga">Слуга-лидер моей БВ и ее уровень</label>
+                        <input type="text" name="sanga" value="{{ old('sanga') }}" class="form-control" id="profile_sanga" placeholder="например: Нандагопал дас, БВ2" required="true">
                     </div>
                     <div class="form-group">
-                        <label for="profile_phone">Округ БВ</label>
-                        <input type="text" name="okrug" value="" class="form-control" id="profile_phone" placeholder="Мой округ БВ" required="true">
+                        <label for="profile_cirсle">Округ БВ</label>
+                        <input type="text" name="cirсle" value="{{ old('circle') }}" class="form-control" id="profile_cirсle" placeholder="" required="true">
                     </div>
                 </div> <!-- /.box-body -->
                 <div class="box-footer">

@@ -43,7 +43,23 @@ class ProfileController extends Controller
      */
     public function update(Request $request)
     {
-        //
+        $validator = \Validator::make($input = $request->all(), $rules = [
+            'name'     => 'required|max:255|min:5',
+            'email'    => 'required|email|max:255|unique:users',
+            'phone'    => 'required|digits_between:11,13',
+        ]);
+
+        if ($validator->fails()) {
+            $this->throwValidationException(
+                $request, $validator
+            );
+        }
+
+        $user = \Auth::getUser();
+        $user->fill(array_intersect_key($input, $rules));
+        $user->save();
+
+        return redirect('profile');
     }
 
 }

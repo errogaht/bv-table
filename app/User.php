@@ -37,6 +37,16 @@ class User extends BaseModel implements AuthenticatableContract,
      */
     protected $hidden = ['password', 'remember_token'];
 
+    protected $casts = [
+        'name'  => 'trim',
+        'email' => 'trim|lower',
+    ];
+
+    public function setPhoneAttribute($value)
+    {
+        $this->attributes['phone'] = ltrim($value, '+');
+    }
+
     public function roles()
     {
         return $this->belongsToMany('App\Authority\Role');
