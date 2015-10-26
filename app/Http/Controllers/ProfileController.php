@@ -21,9 +21,8 @@ class ProfileController extends Controller
 
 
     /**
-     * Show the form for editing the specified resource.
+     * Форма редактирования своего Профиля
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function edit()
@@ -34,19 +33,24 @@ class ProfileController extends Controller
         ]);
     }
 
+
     /**
-     * Update the specified resource in storage.
+     * Сохранить свой Профиль
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request)
     {
+        $user = \Auth::getUser();
+
         $validator = \Validator::make($input = $request->all(), $rules = [
-            'name'     => 'required|max:255|min:5',
-            'email'    => 'required|email|max:255|unique:users',
-            'phone'    => 'required|digits_between:11,13',
+            'name'  => 'required|max:255|min:5',
+            'email' => "required|email|max:255|unique:users,email,{$user->id},id",
+            'phone' => 'required|digits_between:11,13',
+            'role'  => 'required|max:255|min:5',
+            'sanga' => 'required|max:255|min:5',
+            'circle' => 'required|max:255|min:5',
         ]);
 
         if ($validator->fails()) {
@@ -55,7 +59,6 @@ class ProfileController extends Controller
             );
         }
 
-        $user = \Auth::getUser();
         $user->fill(array_intersect_key($input, $rules));
         $user->save();
 

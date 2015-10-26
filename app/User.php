@@ -28,7 +28,7 @@ class User extends BaseModel implements AuthenticatableContract,
      *
      * @var array
      */
-    protected $fillable = ['name', 'email', 'password', 'phone'];
+    protected $fillable = ['name', 'email', 'password', 'phone', 'role', 'sanga', 'circle'];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -38,8 +38,11 @@ class User extends BaseModel implements AuthenticatableContract,
     protected $hidden = ['password', 'remember_token'];
 
     protected $casts = [
-        'name'  => 'trim',
-        'email' => 'trim|lower',
+        'name'   => 'trim',
+        'email'  => 'trim|lower',
+        'role'   => 'trim',
+        'sanga'  => 'trim',
+        'circle' => 'trim',
     ];
 
     public function setPhoneAttribute($value)

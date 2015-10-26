@@ -2,6 +2,17 @@
 /**
  * @var \App\User $user
  */
+
+$roles = [
+    'Слуга-лидер БВ1',
+    'помощник Слуги-лидера БВ1',
+    'Слуга-лидер сектора',
+    'Слуга-лидер округа',
+];
+if (($role_new = (old('role') ?: $user->role)) && !in_array($role_new, $roles)) {
+    array_unshift($roles, $role_new);
+}
+$roles = array_combine($roles, $roles);
 ?>
 
 @extends('dashboard')
@@ -15,7 +26,9 @@
             <div class="box-body box-profile">
                 <img class="profile-user-img img-responsive img-circle" src="http://www.gravatar.com/avatar/{{md5($user->email)}}?s=100&amp;d=wavatar" alt="User profile picture">
                 <h3 class="profile-username text-center">{{$user->name}}</h3>
-                <p class="text-muted text-center">Software Engineer</p>
+                <p class="text-muted text-center">{{$user->role}}</p>
+                <p class="text-muted text-center">Санга: {{$user->sanga}}</p>
+                <p class="text-muted text-center">Округ: {{$user->circle}}</p>
 
                 <ul class="list-group list-group-unbordered">
                     <li class="list-group-item">
@@ -41,9 +54,7 @@
                 </div>
             @endif
 
-            <form role="form" style="width: 40%;" action="{{ route('profile') }}" method="POST">
-                {!! csrf_field() !!}
-                <input type="hidden" name="_method" value="PUT">
+            {!! Form::open(['url'=>'profile', 'method'=>'put', 'style'=>'width: 50%;']) !!}
                 <div class="box-body">
                     <div class="form-group">
                         <label for="profile_name">Имя</label>
@@ -59,26 +70,21 @@
                     </div>
                     <div class="form-group">
                         <label for="profile_role">Моя роль в бхакти-врикше</label>
-                        <select class="form-control select2" id="profile_role">
-                            <option>Слуга-лидер БВ1</option>
-                            <option>помощник Слуги-лидера БВ1</option>
-                            <option>Слуга-лидер сектора</option>
-                            <option>Слуга-лидер округа</option>
-                        </select>
+                        <?php echo Form::select('role',$roles,(old('role') ?: $user->role),['id'=>'profile_role','class'=>'form-control select2']); ?>
                     </div>
                     <div class="form-group">
-                        <label for="profile_sanga">Слуга-лидер моей БВ и ее уровень</label>
-                        <input type="text" name="sanga" value="{{ old('sanga') }}" class="form-control" id="profile_sanga" placeholder="например: Нандагопал дас, БВ2" required="true">
+                        <label for="profile_sanga">Моя санга: БВ, ее слуга-лидер</label>
+                        <input type="text" name="sanga" value="{{ old('sanga') ?: $user->sanga }}" class="form-control" id="profile_sanga" placeholder="например: БВ2 Кузьминки, Нандагопал дас" required="true">
                     </div>
                     <div class="form-group">
-                        <label for="profile_cirсle">Округ БВ</label>
-                        <input type="text" name="cirсle" value="{{ old('circle') }}" class="form-control" id="profile_cirсle" placeholder="" required="true">
+                        <label for="profile_circle">Округ БВ</label>
+                        <input type="text" name="circle" value="{{ old('circle') ?: $user->circle }}" class="form-control" id="profile_circle" placeholder="" required="true">
                     </div>
                 </div> <!-- /.box-body -->
                 <div class="box-footer">
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" class="btn btn-primary">Сохранить</button>
                 </div>
-            </form>
+            {!! Form::close() !!}
         </div><!-- /.box-->
     </div><!-- /.col -->
 
