@@ -1,3 +1,16 @@
+<?php
+$roles = [
+        'Слуга-лидер БВ1',
+        'помощник Слуги-лидера БВ1',
+        'Слуга-лидер сектора',
+        'Слуга-лидер округа',
+];
+if (($role_new = old('role')) && !in_array($role_new, $roles)) {
+    array_unshift($roles, $role_new);
+}
+$roles = array_combine($roles, $roles);
+?>
+
 @extends('auth/template')
 
 @section('content')
@@ -16,6 +29,19 @@
             <input type="tel" class="form-control" name="phone" placeholder="+79161234567" value="{{ old('phone') }}" required>
             <span class="glyphicon glyphicon-phone form-control-feedback"></span>
         </div>
+        <div class="form-group has-feedback">
+            <label for="profile_role">Моя роль в бхакти-врикше</label>
+            <?php echo Form::select('role',$roles,old('role'),['id'=>'profile_role','class'=>'form-control select2']); ?>
+        </div>
+        <div class="form-group has-feedback">
+            <label for="profile_sanga">Моя санга: БВ, ее слуга-лидер</label>
+            <input type="text" name="sanga" value="{{ old('sanga') }}" class="form-control" id="profile_sanga" placeholder="например: БВ2 Кузьминки, Нандагопал дас" required="true">
+        </div>
+        <div class="form-group has-feedback">
+            <label for="profile_circle">Округ БВ</label>
+            <input type="text" name="circle" value="{{ old('circle') }}" class="form-control" id="profile_circle" placeholder="" required="true">
+        </div>
+
         <div class="form-group has-feedback">
             <input type="password" name="password" id="password" class="form-control" placeholder="Пароль" required>
             <span class="glyphicon glyphicon-lock form-control-feedback"></span>
@@ -36,4 +62,26 @@
         <a href="{{route('auth.login')}}">Авторизация</a>
     </div>
 
+@endsection
+
+@section('head')
+    <link rel="stylesheet" href="/bower_components/admin-lte/plugins/select2/select2.min.css">
+@endsection
+
+@section('js')
+    <script src="/bower_components/admin-lte/plugins/select2/select2.full.min.js"></script>
+    <script>
+        $(function () {
+            $("#profile_role").select2({
+                tags: true,
+                createTag: function (params) {
+                    return {
+                        id: params.term,
+                        text: params.term,
+                        newOption: true
+                    }
+                }
+            });
+        });
+    </script>
 @endsection

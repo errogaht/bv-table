@@ -44,25 +44,31 @@ class ProfileController extends Controller
     {
         $user = \Auth::getUser();
 
-        $validator = \Validator::make($input = $request->all(), $rules = [
-            'name'  => 'required|max:255|min:5',
-            'email' => "required|email|max:255|unique:users,email,{$user->id},id",
-            'phone' => 'required|digits_between:11,13',
-            'role'  => 'required|max:255|min:5',
-            'sanga' => 'required|max:255|min:5',
-            'circle' => 'required|max:255|min:5',
-        ]);
-
-        if ($validator->fails()) {
-            $this->throwValidationException(
-                $request, $validator
-            );
+        $data = $request->all();
+        if (!empty($data['phone'])) {
+            $data['phone'] = ltrim($data['phone'], '+');
         }
 
-        $user->fill(array_intersect_key($input, $rules));
+        $validator = \Validator::make($data, $rules = self::getValidatorRules($user->id));
+        if ($validator->fails()) {
+            $this->throwValidationException($request, $validator);
+        }
+        $user->fill(array_intersect_key($data, $rules));
         $user->save();
 
         return redirect('profile');
     }
 
+
+    public static function getValidatorRules($userId = 0)
+    {
+        return [
+            'name'   => 'required|max:255|min:5',
+            'email'  => "required|email|max:255|unique:users,email,{$userId},id",
+            'phone'  => "required|digits_between:11,13|unique:users,phone,{$userId},id",
+            'role'   => 'required|max:255|min:5',
+            'sanga'  => 'required|max:255|min:5',
+            'circle' => 'required|max:255|min:5',
+        ];
+    }
 }

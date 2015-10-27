@@ -49,13 +49,16 @@ class AuthController extends Controller
      */
     protected function validator(array $data)
     {
-        return Validator::make($data, [
-            'name'     => 'required|max:255|min:5',
-            'email'    => 'required|email|max:255|unique:users',
-            'phone'    => 'required|digits_between:11,13',
-            'password' => 'required|confirmed|min:6',
-        ]);
+        $rules = \App\Http\Controllers\ProfileController::getValidatorRules();
+        $rules['password'] = 'required|confirmed|min:6';
+
+        if (!empty($data['phone'])) {
+            $data['phone'] = ltrim($data['phone'], '+');
+        }
+
+        return Validator::make($data, $rules);
     }
+
 
     /**
      * Create a new user instance after a valid registration.
@@ -70,6 +73,9 @@ class AuthController extends Controller
             'phone'    => ltrim($data['phone'], '+'),
             'email'    => strtolower(trim($data['email'])),
             'password' => bcrypt($data['password']),
+            'role'     => $data['role'],
+            'sanga'    => $data['sanga'],
+            'circle'   => $data['circle'],
         ]);
     }
 }
