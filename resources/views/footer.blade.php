@@ -1,8 +1,7 @@
 <footer class="main-footer">
     <!-- To the right -->
     <div class="pull-right hidden-xs">
-        Anything you want
     </div>
     <!-- Default to the left -->
-    <strong>Copyright ! 2015 <a href="#">Company</a>.</strong> All rights reserved.
+    По всем замечаниям - пишите в <a href="https://vk.com/id42507610">ВК</a> или на <a href="mailto:maxim.oleinik@gmail.com">email</a>
 </footer>
