@@ -7,20 +7,6 @@ use App\Http\Requests;
 class ProfileController extends Controller
 {
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //return view('profile')->with([
-        //    'profle' => \App\User::find($id)
-        //]);
-    }
-
-
-    /**
      * Форма редактирования своего Профиля
      *
      * @return \Illuminate\Http\Response

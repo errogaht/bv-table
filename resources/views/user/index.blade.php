@@ -12,19 +12,19 @@
                 <table class="table table-bordered table-striped">
                     <thead>
                     <tr>
-                        <th>Регистрация</th>
                         <th>Имя</th>
                         <th>Телефон</th>
                         <th>Email</th>
+                        <th></th>
                     </tr>
                     </thead>
                     <tbody>
                     @foreach($list as $user)
                         <tr>
-                            <td>{{ date_create($user->created_at)->format('d.m.Y') }}</td>
-                            <td><a href="{!! action('UserController@show', ['id' => $user->id]) !!}">{{ $user->name }}</a></td>
+                            <td><a href="{!! route('user.show', [$user]) !!}">{{ $user->name }}</a></td>
                             <td>{{ $user->phone }}</td>
                             <td>{{ $user->email }}</td>
+                            <td>{{ $user->role }}</td>
                         </tr>
                     @endforeach
                     </tbody>

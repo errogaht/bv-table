@@ -1,6 +1,6 @@
 <?php namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\User;
 use App\Http\Requests;
 
 
@@ -28,8 +28,11 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //return view('profile')->with(['profle' => \App\Profile::find($id)]);
-        return view('profile');
+        $user = User::findOrFail($id);
+        return view('user/show')->with([
+            'page_title' => 'Пользователи - '.$user->name,
+            'user' => $user,
+        ]);
     }
 
 }

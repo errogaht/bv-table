@@ -28,10 +28,8 @@ Route::group(['middleware' => 'auth'], function () {
     );
 
     // Профиль пользователя
-    Route::get('profile',      ['as' => 'profile',      'uses'=>'\App\Http\Controllers\ProfileController@edit']);
-    Route::put('profile',      ['as' => 'profile',      'uses'=>'\App\Http\Controllers\ProfileController@update']);
-    Route::get('profile/{id}', ['as' => 'profile_view', 'uses'=>'\App\Http\Controllers\ProfileController@show']);
-
+    Route::get('profile', ['as' => 'profile', 'uses' => '\App\Http\Controllers\ProfileController@edit']);
+    Route::put('profile', ['as' => 'profile', 'uses' => '\App\Http\Controllers\ProfileController@update']);
 
     Route::resource('contact', 'ContactController');
 });
