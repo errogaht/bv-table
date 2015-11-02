@@ -17,7 +17,10 @@ class ContactController extends Controller
      */
     public function index()
     {
-        return view('table')->with(['contacts' => \App\Contact::all()]);
+        return view('table')->with([
+            'page_title' => 'Контакты',
+            'contacts' => \App\Contact::all()
+        ]);
     }
 
     /**
