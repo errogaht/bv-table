@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Contact;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -47,15 +48,21 @@ class ContactController extends Controller
         return view('table')->with(['contacts' => \App\Contact::all()]);
     }
 
+
     /**
-     * Display the specified resource.
+     * Просмотр
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-
+        $contact = Contact::findOrFail($id);
+        return view('contact/show')->with([
+            'page_title' => $contact->name,
+            'page_description' => 'Добавлен: ' . $contact->created_at->format('d.m.Y'),
+            'contact' => $contact,
+        ]);
     }
 
     /**

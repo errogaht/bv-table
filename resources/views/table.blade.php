@@ -30,7 +30,7 @@
                         @foreach($contacts as $contact)
                             <tr>
                                 <td>{{ date_create($contact->created_at)->format('d.m.Y H:i') }}</td>
-                                <td>{{ $contact->name }}</td>
+                                <td><a href="{{ route('contact.show', ['id'=>$contact->id]) }}">{{ $contact->name }}</a></td>
                                 <td>{{ $contact->phone }}</td>
                                 <td>{{ $contact->email }}</td>
                                 <td>{{ $contact->city }}</td>
