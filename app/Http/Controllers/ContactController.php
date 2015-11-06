@@ -1,18 +1,18 @@
-<?php
-
-namespace App\Http\Controllers;
+<?php namespace App\Http\Controllers;
 
 use App\Contact;
 use Illuminate\Http\Request;
 use App\Http\Requests;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\App;
 use Laracasts\Flash\Flash;
 
+
+/**
+ * Контакты
+ */
 class ContactController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Список
      *
      * @return \Illuminate\Http\Response
      */
@@ -74,13 +74,14 @@ class ContactController extends Controller
     public function edit($id)
     {
         $contact = Contact::findOrFail($id);
-        return view('contact.edit-form')->with([
+        return view('contact/edit')->with([
             'contact' => $contact,
             'page_title' => $contact->name,
             'page_description' => 'Добавлен: ' . $contact->created_at->format('d.m.Y'),
             'title_link' => route('contact.show', $contact),
         ]);
     }
+
 
     /**
      * Редактировать
@@ -104,6 +105,13 @@ class ContactController extends Controller
         return redirect(route('contact.edit', $contact));
     }
 
+
+    /**
+     * Правила для валидатора
+     *
+     * @param int $contactId
+     * @return array
+     */
     public static function getValidatorRules($contactId = 0)
     {
         return [
