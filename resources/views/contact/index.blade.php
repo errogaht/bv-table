@@ -12,36 +12,22 @@
                         <thead>
                         <tr>
                             <th>Дата</th>
-                            <th>Имя</th>
-                            <th>Телефон</th>
-                            <th>Email</th>
-                            <th>Город</th>
-                            <th>Станция метро</th>
-                            <th>Возраст</th>
-                            <th>Как давно знакомы с СК?</th>
-                            <th>В какое время удобно?</th>
-                            <th>Комментарий</th>
                             <th>Статус</th>
+                            <th>Имя</th>
+                            <th>Город</th>
+                            <th>Метро</th>
                             <th>Откуда</th>
-                            <th></th>
                         </tr>
                         </thead>
                         <tbody>
                         @foreach($contacts as $contact)
                             <tr>
-                                <td>{{ date_create($contact->created_at)->format('d.m.Y H:i') }}</td>
-                                <td><a href="{{ route('contact.edit', ['id'=>$contact->id]) }}">{{ $contact->name }}</a></td>
-                                <td>{{ $contact->phone }}</td>
-                                <td>{{ $contact->email }}</td>
+                                <td style="white-space: nowrap;">{{ date_create($contact->created_at)->format('Y-m-d') }}</td>
+                                <td><span class="label label-success">{{ $contact->getStatus(true) }}</span></td>
+                                <td style="white-space: nowrap;"><a href="{{ route('contact.edit', ['id'=>$contact->id]) }}">{{ $contact->name }}</a></td>
                                 <td>{{ $contact->city }}</td>
                                 <td>{{ $contact->metro }}</td>
-                                <td>{{ $contact->age }}</td>
-                                <td>{{ $contact->how_long }}</td>
-                                <td>{{ $contact->preferred_date }}</td>
-                                <td>{{ $contact->comment }}</td>
-                                <td>{{ $contact->status }}</td>
                                 <td>{{ $contact->source }}</td>
-                                <td><a href="#" data-url="{!! action('ContactController@edit', ['id' => $contact->id]) !!}" class="edit-link">E</a></td>
                             </tr>
                         @endforeach
                         </tbody>
@@ -49,17 +35,10 @@
                         <tr>
                             <th>Дата</th>
                             <th>Имя</th>
-                            <th>Телефон</th>
-                            <th>Email</th>
                             <th>Город</th>
-                            <th>Станция метро</th>
-                            <th>Возраст</th>
-                            <th>Как давно знакомы с СК?</th>
-                            <th>В какое время удобно?</th>
-                            <th>Комментарий</th>
+                            <th>Метро</th>
                             <th>Статус</th>
                             <th>Откуда</th>
-                            <th></th>
                         </tr>
                         </tfoot>
                     </table>
@@ -84,7 +63,7 @@
     $(function () {
         $('#contacts_table').DataTable({
             "paging": true,
-            "lengthChange": false,
+            "lengthChange": true,
             "searching": true,
             "ordering": true,
             "info": true,

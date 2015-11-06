@@ -20,7 +20,7 @@ class ContactController extends Controller
     {
         return view('contact/index')->with([
             'page_title' => 'Контакты',
-            'contacts' => \App\Contact::all()
+            'contacts' => \App\Contact::all()->sortByDesc('created_at')
         ]);
     }
 

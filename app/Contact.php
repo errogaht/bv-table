@@ -3,6 +3,27 @@
 
 class Contact extends BaseModel
 {
+    const STATUS_NEW = 1;
+    const STATUS_WORK = 2;
+    const STATUS_SUCCESS = 3;
+    const STATUS_FAIL = 9;
+
+    private static $statuses = [
+        self::STATUS_NEW     => 'Новый',
+        self::STATUS_WORK    => 'Обработка',
+        self::STATUS_SUCCESS => 'Посещает',
+        self::STATUS_FAIL    => 'Отказ',
+    ];
+
+    public function getStatus($label = false)
+    {
+        if ($label) {
+            return self::$statuses[$this->status];
+        }
+        return $this->status;
+    }
+
+
     protected $fillable = [
         'created_at',
         'name',
