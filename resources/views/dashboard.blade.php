@@ -45,8 +45,13 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                {{ $page_title }}
+                @if (isset($title_link))
+                    <a href="{{$title_link}}">{{ $page_title }}</a>
+                @else
+                    {{ $page_title }}
+                @endif
                 <small>{{ $page_description or null }}</small>
+                @yield('page_title')
             </h1>
         </section>
 

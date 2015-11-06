@@ -42,7 +42,6 @@ class ContactController extends Controller
      */
     public function store(Request $request)
     {
-
         $contact = \App\Contact::create($request->input());
         Flash::success('Контакт успешно добавлен');
         return view('table')->with(['contacts' => \App\Contact::all()]);
@@ -65,19 +64,26 @@ class ContactController extends Controller
         ]);
     }
 
+
     /**
-     * Show the form for editing the specified resource.
+     * Форма Редактирования
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
-        return view('contact.edit-form')->with(['contact' => \App\Contact::find($id)]);
+        $contact = Contact::findOrFail($id);
+        return view('contact.edit-form')->with([
+            'contact' => $contact,
+            'page_title' => $contact->name,
+            'page_description' => 'Добавлен: ' . $contact->created_at->format('d.m.Y'),
+            'title_link' => route('contact.show', $contact),
+        ]);
     }
 
     /**
-     * Update the specified resource in storage.
+     * Редактировать
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -85,22 +91,29 @@ class ContactController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $contact = \App\Contact::find($id);
-        if ($contact->count() > 0) {
-            $contact->update($request->input());
-            Flash::success('Контакт успешно обновлён');
+        $contact = Contact::findOrFail($id);
+
+        $data = $request->all();
+        $validator = \Validator::make($data, $rules = self::getValidatorRules($contact->id));
+        if ($validator->fails()) {
+            $this->throwValidationException($request, $validator);
         }
-        return view('table')->with(['contacts' => \App\Contact::all()]);
+        $contact->update($request->input());
+        Flash::success('Контакт успешно обновлён');
+
+        return redirect(route('contact.edit', $contact));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public static function getValidatorRules($contactId = 0)
     {
-        //
+        return [
+            'name'   => 'required|max:255|min:2',
+            'email'  => "email|max:255|unique:contacts,email,{$contactId},id",
+            'phone'  => "digits_between:10,13|unique:contacts,phone,{$contactId},id",
+            'city'   => 'required|max:255|min:2',
+            'metro'  => 'required|max:255|min:4',
+            'age'    => "digits_between:1,2",
+        ];
     }
+
 }

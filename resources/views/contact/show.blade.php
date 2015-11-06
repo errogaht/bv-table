@@ -18,6 +18,14 @@ $fields = [
 
 @extends('dashboard')
 
+@section('page_title')
+    <a href="{{(route('contact.edit', $contact))}}">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <small>изменить</small>
+    </a>
+@endsection
+
+
 @section('content')
 
     <!-- Default box -->
