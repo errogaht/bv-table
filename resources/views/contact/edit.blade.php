@@ -13,7 +13,11 @@
             </div>
         </div>
 
-    {!! Form::model($contact, array('route' => array('contact.update', $contact->id), 'method' => 'PUT', 'class'=>"form-horizontal")) !!}
+    @if ($contact->id)
+        {!! Form::model($contact, array('route' => array('contact.update', $contact->id), 'method' => 'PUT', 'class'=>"form-horizontal")) !!}
+    @else
+        {!! Form::model($contact, array('route' => array('contact.store'), 'method' => 'POST', 'class'=>"form-horizontal")) !!}
+    @endif
     <div class="box-body">
 
         @if (count($errors) > 0)

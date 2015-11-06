@@ -24,27 +24,39 @@ class ContactController extends Controller
         ]);
     }
 
+
     /**
-     * Show the form for creating a new resource.
+     * Форма добавления
      *
      * @return \Illuminate\Http\Response
      */
     public function create()
     {
-        //
+        return view('contact/edit')->with([
+            'contact' => new Contact,
+            'page_title' => 'Добавить контакт',
+        ]);
     }
 
+
     /**
-     * Store a newly created resource in storage.
+     * Добавить контакт
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
+        $data = $request->input();
+        $validator = \Validator::make($data, $rules = self::getValidatorRules());
+        if ($validator->fails()) {
+            $this->throwValidationException($request, $validator);
+        }
+
         $contact = \App\Contact::create($request->input());
         Flash::success('Контакт успешно добавлен');
-        return view('table')->with(['contacts' => \App\Contact::all()]);
+
+        return redirect(route('contact.edit', $contact));
     }
 
 
