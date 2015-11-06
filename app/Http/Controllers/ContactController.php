@@ -119,7 +119,7 @@ class ContactController extends Controller
             'email'  => "email|max:255|unique:contacts,email,{$contactId},id",
             'phone'  => "digits_between:10,13|unique:contacts,phone,{$contactId},id",
             'city'   => 'required|max:255|min:2',
-            'metro'  => 'required|max:255|min:4',
+            'metro'  => 'max:255|min:4',
             'age'    => "digits_between:1,2",
         ];
     }
