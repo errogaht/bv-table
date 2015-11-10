@@ -1,8 +1,5 @@
 <?php
 
-use Carbon\Carbon;
-
-
 
 Route::get('auth/logout', ['as' => 'auth.logout', 'uses'=>'Auth\AuthController@getLogout']);
 Route::group(['prefix' => 'auth', 'as'=>'auth.', 'middleware' => 'is_authenticated'], function () {
@@ -31,7 +28,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('profile', ['as' => 'profile', 'uses' => '\App\Http\Controllers\ProfileController@edit']);
     Route::put('profile', ['as' => 'profile', 'uses' => '\App\Http\Controllers\ProfileController@update']);
 
+    // Контакты
     Route::resource('contact', 'ContactController');
+
+    // Комментарий
+    Route::post('contact/{id}/log', ['as' => 'contact_log.store', 'uses' => '\App\Http\Controllers\ContactLogController@store']);
 });
 
 
