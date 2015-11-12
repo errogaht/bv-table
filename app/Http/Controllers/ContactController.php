@@ -104,6 +104,7 @@ class ContactController extends Controller
      */
     public function update(Request $request, $id)
     {
+        /** @var Contact $contact */
         $contact = Contact::findOrFail($id);
 
         $data = $request->all();

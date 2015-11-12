@@ -2,24 +2,8 @@
 /**
  * @var \App\Contact $contact
  */
-$fields = [
-        'phone'          => 'Телефон',
-        'email'          => 'Email',
-        'city'           => 'Город',
-        'metro'          => 'Метро',
-
-        'age'            => 'Возраст',
-        'how_long'       => 'Как давно знаком с СК',
-        'preferred_date' => 'В какие дни удобно',
-
-//        'status'         => '',
-        'source'         => 'Откуда',
-
-        'comment'        => 'Комментарий',
-];
 
 $logController = new \App\Http\Controllers\ContactLogController;
-
 ?>
 
 @extends('dashboard')
