@@ -56,7 +56,7 @@ class ContactController extends Controller
         $contact = \App\Contact::create($request->input());
         Flash::success('Контакт успешно добавлен');
 
-        return redirect(route('contact.edit', $contact));
+        return redirect(route('contact.show', $contact));
     }
 
 
@@ -115,7 +115,7 @@ class ContactController extends Controller
         $contact->update($request->input());
         Flash::success('Контакт успешно обновлён');
 
-        return redirect(route('contact.edit', $contact));
+        return redirect(route('contact.show', $contact));
     }
 
 

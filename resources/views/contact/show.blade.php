@@ -8,13 +8,6 @@ $logController = new \App\Http\Controllers\ContactLogController;
 
 @extends('dashboard')
 
-@section('page_title')
-    <a href="{{(route('contact.edit', $contact))}}">
-        <span class="glyphicon glyphicon-pencil"></span>
-        <small>изменить</small>
-    </a>
-@endsection
-
 
 @section('content')
 
@@ -24,6 +17,12 @@ $logController = new \App\Http\Controllers\ContactLogController;
 
             <div class="box box-primary">
                 <div class="box-body">
+
+
+                    <a class="pull-right" href="{{(route('contact.edit', $contact))}}">
+                        <span class="glyphicon glyphicon-pencil"></span>
+                        <small>изменить</small>
+                    </a>
 
                     <strong><i class="fa fa-mobile margin-r-5"></i> Контакты</strong>
                     <p class="text-muted">
