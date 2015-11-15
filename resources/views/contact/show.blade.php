@@ -53,9 +53,20 @@ $logController = new \App\Http\Controllers\ContactLogController;
 
                     <hr>
                     <strong><i class="fa fa-search margin-r-5"></i> Откуда</strong>
-                    <p class="text-muted">
-                        {{ $contact->source }}
-                    </p>
+                    @if ($contact->source)
+                        <p class="text-muted">
+                            {{ $contact->source }}
+                        </p>
+                    @endif
+                    @if ($created_by = $contact->created_by_user)
+                        <div class="user-block">
+                            <img class="img-circle img-bordered-sm" src="<?php echo $created_by->getProfileImage(); ?>" alt="user image" />
+                                <span class="description">
+                                    добавил: <a href="{{route('user.show', $created_by)}}">{{$created_by->name}}</a>
+                                </span>
+                            <span class="description">{{$contact->created_at->format(DATE_FORMAT)}}</span>
+                        </div>
+                    @endif
 
                     @if ($value = $contact->comment)
                         <hr>

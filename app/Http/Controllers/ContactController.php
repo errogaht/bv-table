@@ -53,7 +53,10 @@ class ContactController extends Controller
             $this->throwValidationException($request, $validator);
         }
 
-        $contact = \App\Contact::create($request->input());
+
+        $contact = new \App\Contact($request->input());
+        $contact->created_by = \Auth::getUser()->id;
+        $contact->save();
         Flash::success('Контакт успешно добавлен');
 
         return redirect(route('contact.show', $contact));
@@ -71,7 +74,6 @@ class ContactController extends Controller
         $contact = Contact::findOrFail($id);
         return view('contact/show')->with([
             'page_title' => $contact->name,
-            'page_description' => 'Добавлен: ' . $contact->created_at->format('d.m.Y'),
             'contact' => $contact,
         ]);
     }
@@ -89,7 +91,6 @@ class ContactController extends Controller
         return view('contact/edit')->with([
             'contact' => $contact,
             'page_title' => $contact->name,
-            'page_description' => 'Добавлен: ' . $contact->created_at->format('d.m.Y'),
             'title_link' => route('contact.show', $contact),
         ]);
     }

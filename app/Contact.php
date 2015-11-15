@@ -63,4 +63,9 @@ class Contact extends BaseModel
     {
         return $this->belongsTo('App\User');
     }
+
+    public function created_by_user()
+    {
+        return $this->belongsTo('App\User', 'created_by');
+    }
 }

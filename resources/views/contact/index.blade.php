@@ -1,5 +1,9 @@
 @extends('dashboard')
 
+@section('page_title')
+    <a href="{{route('contact.create')}}" class="btn btn-success pull-right"><i class="fa fa-plus-circle"></i> Добавить</a>
+@endsection
+
 @section('content')
     <div class="row">
 
