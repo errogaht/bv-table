@@ -1,6 +1,8 @@
 <?php
 
 define('DATE_FORMAT', 'd.m.Y');
+define('DATE_DB', 'Y-m-d H:i:s');
+define('TIME', $_SERVER['REQUEST_TIME']);
 
 /*
 |--------------------------------------------------------------------------

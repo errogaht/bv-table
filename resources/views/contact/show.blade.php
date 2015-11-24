@@ -4,6 +4,7 @@
  */
 
 $logController = new \App\Http\Controllers\ContactLogController;
+$statusStyle = Lang::get('contact.status_style.'.$contact->status);
 ?>
 
 @extends('dashboard')
@@ -15,7 +16,31 @@ $logController = new \App\Http\Controllers\ContactLogController;
 
         <div class="col-md-5">
 
+
             <div class="box box-primary">
+                <div class="box-body">
+                    <b>Статус:</b>
+                    <span class="label label-{{ $statusStyle }}">
+                        {{ $contact->getStatus(true) }}
+                    </span>
+                    @if ($taken_by = $contact->taken_by_user)
+                        <div class="user-block">
+                            <img class="img-circle img-bordered-sm" src="<?php echo $taken_by->getProfileImage(); ?>" alt="user image" />
+                                <span class="description">
+                                    Взял: <a href="{{route('user.show', $taken_by)}}">{{$taken_by->name}}</a>
+                                </span>
+                            <span class="description">{{$contact->taken_at->format(DATE_FORMAT)}}</span>
+                        </div>
+                    @endif
+                    {!! Form::open(['route' => ['contact.status', $contact->id, \App\Contact::STATUS_WORK], 'method' => 'PUT']) !!}
+                    @if (\App\Contact::STATUS_NEW == $contact->getStatus())
+                        <button type="submit" class="btn btn-sm btn-block btn-warning" style="width: 12em;">взять в Обработку</button>
+                    @endif
+                    {!! Form::close() !!}
+                </div><!-- /.box-body -->
+            </div><!-- /.box -->
+
+                <div class="box box-primary">
                 <div class="box-body">
 
 

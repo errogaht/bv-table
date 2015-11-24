@@ -138,4 +138,32 @@ class ContactController extends Controller
         ];
     }
 
+
+    /**
+     * Изменить Статус
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param                          $id
+     * @param                          $status
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function status(Request $request, $id, $status)
+    {
+        /** @var Contact $contact */
+        $contact = Contact::findOrFail($id);
+
+        if ($contact->status != $status) {
+            switch ($status) {
+                case \App\Contact::STATUS_WORK:
+                    $contact->status = $status;
+                    $contact->taken_by = \Auth::getUser()->id;
+                    $contact->taken_at = new \DateTime();
+                    $contact->save();
+                    break;
+                default:
+            }
+        }
+
+        return redirect(route('contact.show', $contact));
+    }
 }

@@ -3,16 +3,6 @@
 @section('content')
 <div class="box">
 
-        <div class="box-header with-border">
-            <div class="row">
-                <div class="col-md-2">
-                    <span class="label label-success" style="font-size: 100%; font-weight: normal; padding: 6px 12px;">Новый</span>
-                </div>
-                <div class="col-md-4">
-                </div>
-            </div>
-        </div>
-
     @if ($contact->id)
         {!! Form::model($contact, array('route' => array('contact.update', $contact->id), 'method' => 'PUT', 'class'=>"form-horizontal")) !!}
     @else

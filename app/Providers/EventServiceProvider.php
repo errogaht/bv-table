@@ -30,17 +30,22 @@ class EventServiceProvider extends ServiceProvider
     {
         parent::boot($events);
 
-        Contact::updating(function ($contact) {
+        Contact::updating(function (Contact $contact) {
             if ($new_values = $contact->getDirty()) {
-                $values = [];
-                $old_values = $contact->getOriginal();
-                foreach ($new_values as $key => $value) {
-                    $values[] = [$key, $old_values[$key], $value];
+                if (isset($new_values['status'])) {
+                    $message = \Lang::get('contact.status_update.'.$new_values['status']);
+                } else {
+                    $values = [];
+                    $old_values = $contact->getOriginal();
+                    foreach ($new_values as $key => $value) {
+                        $values[] = [$key, $old_values[$key], $value];
+                    }
+                    $message = 'json:'.json_encode($values);
                 }
                 $log = new ContactLog;
                 $log->contact_id = $contact->id;
                 $log->user_id = \Auth::getUser()->id;
-                $log->comment = 'json:'.json_encode($values);
+                $log->comment = $message;
                 $log->save();
             }
         });

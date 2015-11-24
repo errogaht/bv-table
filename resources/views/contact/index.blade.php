@@ -1,3 +1,7 @@
+<?php
+$status_styles = Lang::get('contact.status_style');
+?>
+
 @extends('dashboard')
 
 @section('page_title')
@@ -27,7 +31,7 @@
                         @foreach($contacts as $contact)
                             <tr>
                                 <td style="white-space: nowrap;">{{ date_create($contact->created_at)->format('Y-m-d') }}</td>
-                                <td><span class="label label-success">{{ $contact->getStatus(true) }}</span></td>
+                                <td><span class="label label-<?php echo $status_styles[$contact->status]; ?>">{{ $contact->getStatus(true) }}</span></td>
                                 <td style="white-space: nowrap;"><a href="{{ route('contact.show', ['id'=>$contact->id]) }}">{{ $contact->name }}</a></td>
                                 <td>{{ $contact->city }}</td>
                                 <td>{{ $contact->metro }}</td>

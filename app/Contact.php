@@ -68,4 +68,14 @@ class Contact extends BaseModel
     {
         return $this->belongsTo('App\User', 'created_by');
     }
+
+    public function taken_by_user()
+    {
+        return $this->belongsTo('App\User', 'taken_by');
+    }
+
+    public function getDates()
+    {
+        return ['created_at', 'updated_at', 'taken_at'];
+    }
 }
