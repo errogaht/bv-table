@@ -29,6 +29,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::put('profile', ['as' => 'profile', 'uses' => '\App\Http\Controllers\ProfileController@update']);
 
     // Контакты
+    Route::get('contact/user/{user_id}', ['as' => 'contact.user', 'uses' => '\App\Http\Controllers\ContactController@userList']);
     Route::resource('contact', 'ContactController');
     // Статусы
     Route::put('contact/{id}/status/{status}', ['as' => 'contact.status', 'uses' => '\App\Http\Controllers\ContactController@status']);

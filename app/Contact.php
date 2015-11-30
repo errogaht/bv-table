@@ -69,6 +69,19 @@ class Contact extends BaseModel
         return $user->id == $this->taken_by && (self::STATUS_WORK == $status || self::STATUS_SUCCESS == $status);
     }
 
+    public static function countUserStats(User $user)
+    {
+        $result = [
+            \App\Contact::STATUS_WORK => 0,
+            \App\Contact::STATUS_SUCCESS => 0,
+        ];
+        $rows = \DB::select('select status, count(*) as count from contacts where taken_by=:id group by status', ['id' => $user->id]);
+        foreach ($rows as $row) {
+            $result[$row->status] = $row->count;
+        }
+        return $result;
+    }
+
     /**
      * У контакта может быть один пользователь
      */

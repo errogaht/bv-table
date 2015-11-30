@@ -26,6 +26,19 @@ class ContactController extends Controller
 
 
     /**
+     * Список моих контактов
+     */
+    public function userList($user_id)
+    {
+        $user = \App\User::findOrFail($user_id);
+        return view('contact/index')->with([
+            'page_title' => 'Контакты - '.$user->name,
+            'contacts' => \App\Contact::where('taken_by', '=', intval($user_id))->orderBy('status')->get()
+        ]);
+    }
+
+
+    /**
      * Форма добавления
      *
      * @return \Illuminate\Http\Response
