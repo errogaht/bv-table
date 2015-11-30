@@ -34,6 +34,14 @@ class EventServiceProvider extends ServiceProvider
             if ($new_values = $contact->getDirty()) {
                 if (isset($new_values['status'])) {
                     $message = \Lang::get('contact.status_update.'.$new_values['status']);
+
+                    if ($contact->hasAttribute('change_status_comment')) {
+                        if ($comment = $contact->getAttribute('change_status_comment')) {
+                            $message .= PHP_EOL . $comment;
+                        }
+                        unset($contact->change_status_comment);
+                    }
+
                 } else {
                     $values = [];
                     $old_values = $contact->getOriginal();
@@ -42,6 +50,7 @@ class EventServiceProvider extends ServiceProvider
                     }
                     $message = 'json:'.json_encode($values);
                 }
+
                 $log = new ContactLog;
                 $log->contact_id = $contact->id;
                 $log->user_id = \Auth::getUser()->id;

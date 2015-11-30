@@ -20,7 +20,7 @@ class Contact extends BaseModel
         if ($label) {
             return self::$statuses[$this->status];
         }
-        return $this->status;
+        return $this->getAttribute('status');
     }
 
 
@@ -54,6 +54,19 @@ class Contact extends BaseModel
     public function setPhoneAttribute($value)
     {
         $this->attributes['phone'] = ltrim($value, '+');
+    }
+
+
+    public function canStatusWork()
+    {
+        $status = $this->getStatus();
+        return self::STATUS_NEW == $status || self::STATUS_FAIL == $status;
+    }
+
+    public function canStatusChange(User $user)
+    {
+        $status = $this->getStatus();
+        return $user->id == $this->taken_by && (self::STATUS_WORK == $status || self::STATUS_SUCCESS == $status);
     }
 
     /**

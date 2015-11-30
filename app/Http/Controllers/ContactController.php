@@ -74,7 +74,8 @@ class ContactController extends Controller
         $contact = Contact::findOrFail($id);
         return view('contact/show')->with([
             'page_title' => $contact->name,
-            'contact' => $contact,
+            'contact'    => $contact,
+            'user'       => \Auth::getUser(),
         ]);
     }
 
@@ -152,18 +153,34 @@ class ContactController extends Controller
         /** @var Contact $contact */
         $contact = Contact::findOrFail($id);
 
+        // TODO: проверка, что пользователю разрешен перевод в выбранный статус
         if ($contact->status != $status) {
+            $contact->status = $status;
+            $contact->change_status_comment = $request->get('comment');
             switch ($status) {
                 case \App\Contact::STATUS_WORK:
-                    $contact->status = $status;
+                case \App\Contact::STATUS_SUCCESS:
                     $contact->taken_by = \Auth::getUser()->id;
                     $contact->taken_at = new \DateTime();
-                    $contact->save();
+                    break;
+                case \App\Contact::STATUS_FAIL:
+                    if (!$contact->change_status_comment) {
+                        Flash::error('Укажите причину отказа');
+                        goto redirect;
+                    }
+                    //break;
+                case \App\Contact::STATUS_NEW:
+                    $contact->taken_by = null;
+                    $contact->taken_at = null;
                     break;
                 default:
+                    goto redirect;
             }
+
+            $contact->save();
         }
 
+        redirect:
         return redirect(route('contact.show', $contact));
     }
 }

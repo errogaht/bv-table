@@ -31,4 +31,9 @@ class BaseModel extends Model
 
         return $value;
     }
+
+    public function hasAttribute($key)
+    {
+        return array_key_exists($key, $this->attributes);
+    }
 }

@@ -11,6 +11,13 @@ return [
     'field_source'         => 'Откуда',
     'field_comment'        => 'Комментарий',
 
+    'status_label'=> [
+        \App\Contact::STATUS_NEW     => 'Новый',
+        \App\Contact::STATUS_WORK    => 'Обработка',
+        \App\Contact::STATUS_SUCCESS => 'Посещает',
+        \App\Contact::STATUS_FAIL    => 'Отказ',
+    ],
+
     'status_style'=> [
         \App\Contact::STATUS_NEW     => 'success',
         \App\Contact::STATUS_WORK    => 'warning',
@@ -24,4 +31,6 @@ return [
         \App\Contact::STATUS_SUCCESS => 'Отметил, что Посещает',
         \App\Contact::STATUS_FAIL    => 'Отказ',
     ]
+    
+    
 ];

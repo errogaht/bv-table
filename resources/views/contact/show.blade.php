@@ -23,6 +23,43 @@ $statusStyle = Lang::get('contact.status_style.'.$contact->status);
                     <span class="label label-{{ $statusStyle }}">
                         {{ $contact->getStatus(true) }}
                     </span>
+
+                    @if ($contact->canStatusChange($user))
+                    <a class="pull-right" href="#" onclick="$('#change_status_group').toggle(); return false;">
+                        <span class="glyphicon glyphicon-pencil"></span>
+                        <small>изменить</small>
+                    </a>
+                    @endif
+
+
+                    {!! Form::open(['route' => ['contact.status', $contact->id, \App\Contact::STATUS_WORK], 'method' => 'PUT', 'id'=>'change_status_form']) !!}
+                    @if ($contact->canStatusWork())
+                        <button type="submit" class="pull-right btn btn-sm btn-block btn-warning" style="width: 12em;">взять в Обработку</button>
+
+                    @elseif ($contact->canStatusChange($user))
+
+                        <div style="display: none;" id="change_status_group">
+                        <small>Комментарий</small>
+                        <div class="input-group">
+                            <input type="text" name="comment" class="form-control">
+                            <div class="input-group-btn">
+                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                    Изменить <span class="fa fa-caret-down"></span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu" id="change_status_select">
+                                    @foreach(Lang::get('contact.status_label') as $sid => $label)
+                                        @if ($sid != $contact->getStatus())
+                                            <li><a href="{{route('contact.status', [$contact->id, $sid])}}">{{$label}}</a></li>
+                                        @endif
+                                    @endforeach
+                                </ul>
+                            </div><!-- /btn-group -->
+                        </div>
+                        <br/>
+                        </div>
+                    @endif
+                    {!! Form::close() !!}
+
                     @if ($taken_by = $contact->taken_by_user)
                         <div class="user-block">
                             <img class="img-circle img-bordered-sm" src="<?php echo $taken_by->getProfileImage(); ?>" alt="user image" />
@@ -32,11 +69,7 @@ $statusStyle = Lang::get('contact.status_style.'.$contact->status);
                             <span class="description">{{$contact->taken_at->format(DATE_FORMAT)}}</span>
                         </div>
                     @endif
-                    {!! Form::open(['route' => ['contact.status', $contact->id, \App\Contact::STATUS_WORK], 'method' => 'PUT']) !!}
-                    @if (\App\Contact::STATUS_NEW == $contact->getStatus())
-                        <button type="submit" class="btn btn-sm btn-block btn-warning" style="width: 12em;">взять в Обработку</button>
-                    @endif
-                    {!! Form::close() !!}
+
                 </div><!-- /.box-body -->
             </div><!-- /.box -->
 
@@ -130,4 +163,16 @@ $statusStyle = Lang::get('contact.status_style.'.$contact->status);
 
 
     </div><!-- /.row -->
+@endsection
+
+
+@section('js')
+<script type="text/javascript">
+    $(function(){
+        $('#change_status_select a').click(function(e){
+            e.preventDefault();
+            $('#change_status_form').attr('action', this.href).submit();
+        });
+    });
+</script>
 @endsection
