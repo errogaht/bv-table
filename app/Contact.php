@@ -39,7 +39,7 @@ class Contact extends BaseModel
         'source'
     ];
 
-    protected $casts = [
+    protected $set_mutators = [
         'name'           => 'trim',
         'email'          => 'trim|lower',
         'city'           => 'trim|ucfirst',
@@ -49,12 +49,12 @@ class Contact extends BaseModel
         'preferred_date' => 'trim',
         'comment'        => 'trim',
         'source'         => 'trim',
+        'phone'          => 'phone',
     ];
 
-    public function setPhoneAttribute($value)
-    {
-        $this->attributes['phone'] = ltrim($value, '+');
-    }
+    protected $casts = [
+        'phone'          => 'phone',
+    ];
 
 
     public function canStatusWork()

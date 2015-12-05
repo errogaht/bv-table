@@ -60,14 +60,12 @@ class ContactController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->input();
-        $validator = \Validator::make($data, $rules = self::getValidatorRules());
+        $contact = new \App\Contact($request->input());
+        $validator = \Validator::make($contact->getAttributes(), $rules = self::getValidatorRules());
         if ($validator->fails()) {
             $this->throwValidationException($request, $validator);
         }
 
-
-        $contact = new \App\Contact($request->input());
         $contact->created_by = \Auth::getUser()->id;
         $contact->save();
         Flash::success('Контакт успешно добавлен');
@@ -121,13 +119,12 @@ class ContactController extends Controller
     {
         /** @var Contact $contact */
         $contact = Contact::findOrFail($id);
-
-        $data = $request->all();
-        $validator = \Validator::make($data, $rules = self::getValidatorRules($contact->id));
+        $contact->fill($request->all());
+        $validator = \Validator::make($contact->getAttributes(), $rules = self::getValidatorRules($contact->id));
         if ($validator->fails()) {
             $this->throwValidationException($request, $validator);
         }
-        $contact->update($request->input());
+        $contact->save();
         Flash::success('Контакт успешно обновлён');
 
         return redirect(route('contact.show', $contact));
