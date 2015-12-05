@@ -23,6 +23,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('user', '\App\Http\Controllers\UserController',
         ['only' => ['index', 'show']]
     );
+    // Актирвировать/Заблокировать
+    Route::put('user/{id}/active', ['as' => 'user.active', 'uses' => '\App\Http\Controllers\UserController@active']);
 
     // Профиль пользователя
     Route::get('profile', ['as' => 'profile', 'uses' => '\App\Http\Controllers\ProfileController@edit']);

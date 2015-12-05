@@ -2,6 +2,7 @@
 
 use App\User;
 use App\Http\Requests;
+use Illuminate\Http\Request;
 
 
 class UserController extends Controller
@@ -36,7 +37,29 @@ class UserController extends Controller
         return view('user/show')->with([
             'page_title' => 'Пользователи - '.$user->name,
             'user' => $user,
+            'me' => \Auth::getUser(),
         ]);
+    }
+
+
+    /**
+     * Активировать/Заблокировать пользователя
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param                          $id
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function active(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+        if (\Auth::getUser()->is_admin) {
+            $user->is_active = (bool) $request->get('action', false);
+            $user->save();
+            $message = $user->is_active ? 'Активирован' : 'Заблокирован';
+            \Flash::success('Пользователь успешно '.$message);
+        }
+
+        return redirect(route('user.show', $id));
     }
 
 }
