@@ -47,10 +47,15 @@ class AuthController extends Controller
      * @param  array  $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
-    protected function validator(array $data)
+    protected function validator(array $input)
     {
         $rules = \App\Http\Controllers\ProfileController::getValidatorRules();
         $rules['password'] = 'required|confirmed|min:6';
+
+        $user = new User($input);
+        $data = $user->getAttributes();
+        $data['password'] = $input['password'];
+        $data['password_confirmation'] = $input['password_confirmation'];
 
         return Validator::make($data, $rules);
     }
