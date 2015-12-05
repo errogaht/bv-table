@@ -12,6 +12,8 @@
                 <table class="table table-bordered table-striped">
                     <thead>
                     <tr>
+                        <th></th>
+                        <th></th>
                         <th>Имя</th>
                         <th>Телефон</th>
                         <th>Email</th>
@@ -21,6 +23,18 @@
                     <tbody>
                     @foreach($list as $user)
                         <tr>
+                            <td>
+                                @if ($user->is_admin)
+                                    <small class="label bg-blue" title="Админ">A</small>
+                                @endif
+                            </td>
+                            <td>
+                                @if ($user->is_active)
+                                    <small class="label bg-green" title="Доступ разрешен">ok</small>
+                                @else
+                                    <small class="label bg-red" title="Доступ закрыт">&mdash;</small>
+                                @endif
+                            </td>
                             <td><a href="{!! route('user.show', [$user]) !!}">{{ $user->name }}</a></td>
                             <td>{{ $user->phone }}</td>
                             <td>{{ $user->email }}</td>

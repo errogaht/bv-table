@@ -48,7 +48,7 @@ $roles = array_combine($roles, $roles);
                     </div>
                     <div class="form-group">
                         <label for="profile_phone">Телефон</label>
-                        <input type="tel" name="phone" value="{{ old('phone') ?: '+'.$user->phone}}" class="form-control" id="profile_phone" placeholder="+79161234567" required="true">
+                        <input type="tel" name="phone" value="{{ old('phone') ?: $user->phone}}" class="form-control" id="profile_phone" placeholder="+79161234567" required="true">
                     </div>
                     <div class="form-group">
                         <label for="profile_role">Моя роль в бхакти-врикше</label>

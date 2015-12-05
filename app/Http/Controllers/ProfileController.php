@@ -30,16 +30,12 @@ class ProfileController extends Controller
     {
         $user = \Auth::getUser();
 
-        $data = $request->all();
-        if (!empty($data['phone'])) {
-            $data['phone'] = ltrim($data['phone'], '+');
-        }
+        $user->fill($request->all());
 
-        $validator = \Validator::make($data, $rules = self::getValidatorRules($user->id));
+        $validator = \Validator::make($user->getAttributes(), $rules = self::getValidatorRules($user->id));
         if ($validator->fails()) {
             $this->throwValidationException($request, $validator);
         }
-        $user->fill(array_intersect_key($data, $rules));
         $user->save();
 
         return redirect('profile');

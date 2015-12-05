@@ -52,10 +52,6 @@ class AuthController extends Controller
         $rules = \App\Http\Controllers\ProfileController::getValidatorRules();
         $rules['password'] = 'required|confirmed|min:6';
 
-        if (!empty($data['phone'])) {
-            $data['phone'] = ltrim($data['phone'], '+');
-        }
-
         return Validator::make($data, $rules);
     }
 
@@ -68,14 +64,7 @@ class AuthController extends Controller
      */
     protected function create(array $data)
     {
-        return \App\User::create([
-            'name'     => $data['name'],
-            'phone'    => ltrim($data['phone'], '+'),
-            'email'    => strtolower(trim($data['email'])),
-            'password' => bcrypt($data['password']),
-            'role'     => $data['role'],
-            'sanga'    => $data['sanga'],
-            'circle'   => $data['circle'],
-        ]);
+        $data['password'] = bcrypt($data['password']);
+        return \App\User::create($data);
     }
 }

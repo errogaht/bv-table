@@ -37,18 +37,22 @@ class User extends BaseModel implements AuthenticatableContract,
      */
     protected $hidden = ['password', 'remember_token'];
 
-    protected $casts = [
-        'name'   => 'trim',
-        'email'  => 'trim|lower',
-        'role'   => 'trim',
-        'sanga'  => 'trim',
-        'circle' => 'trim',
+    protected $set_mutators = [
+        'name'      => 'trim',
+        'email'     => 'trim|lower',
+        'role'      => 'trim',
+        'sanga'     => 'trim',
+        'circle'    => 'trim',
+        'phone'     => 'phone',
+        'is_admin'  => 'db_bool',
+        'is_active' => 'db_bool',
     ];
 
-    public function setPhoneAttribute($value)
-    {
-        $this->attributes['phone'] = ltrim($value, '+');
-    }
+    protected $casts = [
+        'phone'     => 'phone',
+        'is_admin'  => 'db_bool',
+        'is_active' => 'db_bool',
+    ];
 
     public function roles()
     {

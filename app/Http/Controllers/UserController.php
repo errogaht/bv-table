@@ -14,7 +14,11 @@ class UserController extends Controller
     public function index()
     {
         return view('user/index')->with([
-            'list' => \App\User::paginate(20),
+            'list' => \App\User::
+                orderBy('is_active', 'ASC')
+                ->orderBy('is_admin', 'DESC')
+                ->orderBy('name', 'ASC')
+                ->paginate(20),
             'page_title' => 'Пользователи',
         ]);
     }
