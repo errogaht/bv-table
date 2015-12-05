@@ -14,6 +14,9 @@ class UserController extends Controller
      */
     public function index()
     {
+        if (!\Auth::getUser()->is_admin) {
+            return redirect(route('profile'));
+        }
         return view('user/index')->with([
             'list' => \App\User::
                 orderBy('is_active', 'ASC')

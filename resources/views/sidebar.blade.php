@@ -8,9 +8,15 @@ $route_selected = Request::route()->getName();
 
 $menu = [
     'contact.index' => 'Новые контакты',
-    'user.index'    => 'Пользователи',
+    'user.index'       => [
+        'label' => 'Пользователи',
+        'show'  => $user->is_admin,
+    ],
     'profile'       => 'Профиль',
-    'contact.user'  => ['Мои контакты', [$user->id]],
+    'contact.user'  => [
+        'label'  => 'Мои контакты',
+        'params' => [$user->id],
+    ],
 ];
 
 ?>
@@ -24,16 +30,21 @@ $menu = [
         <!-- Sidebar Menu -->
         <ul class="sidebar-menu">
             <li class="header">&nbsp;</li>
-            <?php foreach ($menu as $route_name => $label): ?>
+            <?php foreach ($menu as $route_name => $opts): ?>
                 <?php
                     $params = [];
-                    if (is_array($label)) {
-                        list($label, $params) = $label;
+                    $show = true;
+                    if (is_array($opts)) {
+                        extract($opts);
+                    } else {
+                        $label = $opts;
                     }
                 ?>
+                <?php if ($show): ?>
                 <li<?php if ($route_selected == $route_name) echo ' class="active"';?>>
                     <a href="<?php echo route($route_name, $params); ?>"><span><?php echo $label; ?></span></a>
                 </li>
+                <?php endif; ?>
             <?php endforeach; ?>
         </ul><!-- /.sidebar-menu -->
     </section>
