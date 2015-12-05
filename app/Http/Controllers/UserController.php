@@ -62,4 +62,21 @@ class UserController extends Controller
         return redirect(route('user.show', $id));
     }
 
+
+    /**
+     * Аккаунт не активен
+     */
+    public function disabled()
+    {
+        $user = \Auth::getUser();
+
+        if ($user->is_active) {
+            return redirect(route('profile'));
+        } else {
+            return view('user/disabled')->with([
+                'user' => $user,
+            ]);
+        }
+    }
+
 }

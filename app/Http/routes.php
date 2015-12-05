@@ -1,6 +1,7 @@
 <?php
 
 
+// Авторизация/Регистрация
 Route::get('auth/logout', ['as' => 'auth.logout', 'uses'=>'Auth\AuthController@getLogout']);
 Route::group(['prefix' => 'auth', 'as'=>'auth.', 'middleware' => 'is_authenticated'], function () {
     // Authentication routes...
@@ -11,8 +12,12 @@ Route::group(['prefix' => 'auth', 'as'=>'auth.', 'middleware' => 'is_authenticat
     Route::post('register', ['as' => 'register', 'uses'=>'Auth\AuthController@postRegister']);
 });
 
+// Аккаунт не активен
+Route::get('disabled', ['middleware' => 'auth', 'as' => 'disabled', 'uses' => '\App\Http\Controllers\UserController@disabled']);
 
-Route::group(['middleware' => 'auth'], function () {
+
+// Рабочий кабинет
+Route::group(['middleware' => ['auth','disabled']], function () {
 
     // Главная
     Route::get('/', function () {
