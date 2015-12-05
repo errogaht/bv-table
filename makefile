@@ -8,10 +8,10 @@
 
 # Сборка проекта (Default)
 build: vendor/composer/installed.json
-	php ./composer.phar dump
+	composer dump
 
 vendor/composer/installed.json: composer.json
-	php ./composer.phar update
+	composer update
 
 # Тесты
 test:
