@@ -83,7 +83,7 @@ class BaseModel extends Model
                     break;
                 case 'phone':
                     if (11==strlen($value)) {
-                        $value = sprintf('+%d (%d) %d-%d-%d', $value[0], substr($value, 1, 3), substr($value, 4, 3), substr($value, 7, 2), substr($value, -2));
+                        $value = sprintf('+%s (%s) %s-%s-%s', $value[0], substr($value, 1, 3), substr($value, 4, 3), substr($value, 7, 2), substr($value, -2));
                     }
                     break;
                 default:
