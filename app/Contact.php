@@ -43,7 +43,7 @@ class Contact extends BaseModel
         'name'           => 'trim',
         'email'          => 'trim|lower',
         'city'           => 'trim|ucfirst',
-        'metro'          => 'trim|ucfirst',
+        'metro'          => 'trim',
         'age'            => 'int',
         'how_long'       => 'trim',
         'preferred_date' => 'trim',
