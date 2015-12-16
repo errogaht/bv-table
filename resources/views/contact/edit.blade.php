@@ -37,7 +37,8 @@
     </div>
     <!-- /.box-body -->
     <div class="box-footer">
-        <button type="submit" class="btn btn-info pull-right">Сохранить</button>
+        <button type="submit" name="add_new" class="btn btn-primary pull-right">Сохранить и добавить новый</button>
+        <button type="submit" class="btn btn-success pull-right" style="margin-right: 5px;">Сохранить</button>
     </div>
     <!-- /.box-footer -->
     {!! Form::close() !!}

@@ -60,7 +60,7 @@ class ContactController extends Controller
      */
     public function store(Request $request)
     {
-        $contact = new \App\Contact($request->input());
+        $contact = new \App\Contact($input = $request->input());
         $validator = \Validator::make($contact->getAttributes(), $rules = self::getValidatorRules());
         if ($validator->fails()) {
             $this->throwValidationException($request, $validator);
@@ -70,6 +70,9 @@ class ContactController extends Controller
         $contact->save();
         Flash::success('Контакт успешно добавлен');
 
+        if (isset($input['add_new'])) {
+            return redirect(route('contact.create'));
+        }
         return redirect(route('contact.show', $contact));
     }
 
